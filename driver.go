@@ -41,6 +41,9 @@ func (l *lister) SetLimit(limit uint) Lister {
 }
 
 func (l *lister) Limit() uint {
+	if l.limit == 0 {
+		return l.config.defaultLimit
+	}
 	return l.limit
 }
 
