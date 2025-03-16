@@ -87,7 +87,7 @@ func (l *lister) SetFilters(filters map[string]any) Lister {
 	return l
 }
 
-func (l *lister) SetFilter(key string, value any) Lister {
+func (l *lister) AddFilter(key string, value any) Lister {
 	l.filters[key] = value
 	return l
 }
@@ -109,7 +109,7 @@ func (l *lister) CastFilter(key string) gocast.Caster {
 	return gocast.NewCaster(l.filters[key])
 }
 
-func (l *lister) SetMeta(key string, value any) Lister {
+func (l *lister) AddMeta(key string, value any) Lister {
 	l.meta[key] = value
 	return l
 }

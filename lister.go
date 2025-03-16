@@ -13,7 +13,7 @@ type Lister interface {
 	// Page retrieves the current page number.
 	Page() uint64
 
-	// Pages calculates and returns the total number of pages based on the total record count and limit per page.
+	// Pages returns the total number of pages based on the total record count and limit per page.
 	Pages() uint64
 
 	// SetLimit specifies the maximum number of items per page.
@@ -38,8 +38,8 @@ type Lister interface {
 	// SetFilters assigns a map of key-value pairs to filter data.
 	SetFilters(filters map[string]any) Lister
 
-	// SetFilter assigns a single filter condition using a key-value pair.
-	SetFilter(key string, value any) Lister
+	// AddFilter assigns a single filter condition using a key-value pair.
+	AddFilter(key string, value any) Lister
 
 	// Filters returns the current set of applied filters.
 	Filters() map[string]any
@@ -53,8 +53,8 @@ type Lister interface {
 	// CastFilter converts a filter value for a specified key into a caster type for flexible data handling.
 	CastFilter(key string) gocast.Caster
 
-	// SetMeta assigns a meta-information value identified by a key.
-	SetMeta(key string, value any) Lister
+	// AddMeta assigns a meta-information value identified by a key.
+	AddMeta(key string, value any) Lister
 
 	// Meta retrieves the metadata value for the given key.
 	Meta(key string) any
