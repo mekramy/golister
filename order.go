@@ -1,6 +1,9 @@
 package golister
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // Order represents the sorting order as a string.
 type Order string
@@ -15,7 +18,7 @@ const (
 
 // String returns the string representation of the Order.
 func (order Order) String() string {
-	return string(order)
+	return strings.ToUpper(string(order))
 }
 
 // Numeric returns 1 for Ascending order and -1 for Descending order.

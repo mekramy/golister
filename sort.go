@@ -22,7 +22,7 @@ func mySQLSorter(sorts []Sort, from uint64, limit uint) string {
 		if i > 0 {
 			sb.WriteString(", ")
 		}
-		sb.WriteString(sort.Field + " ")
+		sb.WriteString("`" + sort.Field + "` ")
 		sb.WriteString(sort.Order.String())
 	}
 	sb.WriteString(" LIMIT " + strconv.FormatUint(from, 10))
@@ -38,7 +38,7 @@ func postgreSQLSorter(sorts []Sort, from uint64, limit uint) string {
 		if i > 0 {
 			sb.WriteString(", ")
 		}
-		sb.WriteString(sort.Field + " ")
+		sb.WriteString(`"` + sort.Field + `" `)
 		sb.WriteString(sort.Order.String())
 	}
 	sb.WriteString(" LIMIT " + strconv.FormatUint(uint64(limit), 10))
