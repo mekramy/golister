@@ -7,11 +7,7 @@ import (
 )
 
 func TestEmptyLister(t *testing.T) {
-	lister := golister.New().
-		AddSort("name", golister.ParseOrder(-1)).
-		AddSort("mobile", "desc").
-		SetLimit(100).
-		SetTotal(0)
+	lister := golister.New().SetTotal(0)
 
 	if v := lister.Page(); v != 0 {
 		t.Errorf("expected Page() to be 0, got %d", v)
@@ -31,6 +27,11 @@ func TestEmptyLister(t *testing.T) {
 
 	if v := lister.To(); v != 0 {
 		t.Errorf("expected To() to be 0, got %d", v)
+	}
+
+	expected := ` ORDER BY "id" ASC LIMIT 25 OFFSET 0`
+	if sorts := lister.SQLSortOrder(); sorts != expected {
+		t.Errorf(`expected SQLSortOrder() to be "%s", got "%s"`, expected, sorts)
 	}
 }
 
@@ -72,6 +73,5 @@ func TestLister(t *testing.T) {
 	expected := ` ORDER BY "name" DESC, "mobile" DESC LIMIT 20 OFFSET 100`
 	if sorts := lister.SQLSortOrder(); sorts != expected {
 		t.Errorf(`expected SQLSortOrder() to be "%s", got "%s"`, expected, sorts)
-
 	}
 }

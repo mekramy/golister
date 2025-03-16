@@ -164,7 +164,7 @@ func (l *lister) To() uint64 {
 }
 
 func (l *lister) SQLSortOrder() string {
-	return l.config.sorter(l.sorts, l.from, l.Limit())
+	return l.config.sorter(l.Sort(), l.From(), l.Limit())
 }
 
 func (l *lister) Response() map[string]any {
