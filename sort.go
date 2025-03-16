@@ -25,7 +25,7 @@ func mySQLSorter(sorts []Sort, from uint64, limit uint) string {
 		sb.WriteString("`" + sort.Field + "` ")
 		sb.WriteString(sort.Order.String())
 	}
-	sb.WriteString(" LIMIT " + strconv.FormatUint(from, 10))
+	sb.WriteString(" LIMIT " + strconv.FormatUint(max(from, 1)-1, 10))
 	sb.WriteString(", " + strconv.FormatUint(uint64(limit), 10))
 	return sb.String()
 }

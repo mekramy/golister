@@ -132,13 +132,22 @@ func (l *lister) CastMeta(key string) gocast.Caster {
 }
 
 func (l *lister) SetTotal(total uint64) Lister {
-	limit := uint64(l.Limit())
+	if total == 0 {
+		l.page = 0
+		l.total = 0
+		l.pages = 0
+		l.from = 0
+		l.to = 0
+	} else {
+		limit := uint64(l.Limit())
+		l.page = max(l.page, 1)
 
-	l.total = total
-	l.pages = (total + limit - 1) / limit
-	l.page = min(l.page, l.pages)
-	l.from = (max(l.page, 1) - 1) * limit
-	l.to = min(l.from+limit, total)
+		l.total = total
+		l.pages = (total + limit - 1) / limit
+		l.page = min(l.page, l.pages)
+		l.from = (max(l.page, 1) - 1) * limit
+		l.to = min(l.from+limit, total)
+	}
 	return l
 }
 
@@ -155,7 +164,7 @@ func (l *lister) To() uint64 {
 }
 
 func (l *lister) SQLSortOrder() string {
-	return l.config.sorter(l.sorts, max(l.from, 1)-1, l.Limit())
+	return l.config.sorter(l.sorts, l.from, l.Limit())
 }
 
 func (l *lister) Response() map[string]any {
@@ -163,14 +172,22 @@ func (l *lister) Response() map[string]any {
 	for k, v := range l.meta {
 		res[k] = v
 	}
-	res["page"] = l.Page()
 	res["limit"] = l.Limit()
 	res["sorts"] = l.Sort()
 	res["search"] = l.Search()
-	res["total"] = l.Total()
-	res["from"] = l.From()
-	res["to"] = l.To()
-	res["pages"] = l.Pages()
+	if l.total == 0 {
+		res["page"] = 0
+		res["total"] = 0
+		res["from"] = 0
+		res["to"] = 0
+		res["pages"] = 0
+	} else {
+		res["page"] = l.Page()
+		res["total"] = l.Total()
+		res["from"] = l.From() + 1
+		res["to"] = l.To()
+		res["pages"] = l.Pages()
+	}
 	return res
 }
 

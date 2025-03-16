@@ -69,6 +69,7 @@ type Lister interface {
 	CastMeta(key string) gocast.Caster
 
 	// SetTotal sets the total number of available records.
+	// This method must called after all sets.
 	SetTotal(total uint64) Lister
 
 	// Total retrieves the total number of available records.
